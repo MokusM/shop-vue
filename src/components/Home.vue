@@ -1,14 +1,14 @@
 <template>
   <div>
-    
+
     <product-list></product-list>
-    
+
   </div>
 </template>
 
 <script>
   import ProductList from './ProductList.vue';
-  
+
   export default {
     name: 'Home',
     components: {
@@ -18,5 +18,5 @@
 
 </script>
 <style scoped>
-  
+
 </style>

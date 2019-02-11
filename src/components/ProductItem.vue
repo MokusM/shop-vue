@@ -1,22 +1,21 @@
 <template>
   <div class="product-item">
     <div class="product">
-      <router-link :to="'/product/'+product._id" class="product-link">
+      <div class="product-link">
         <div class="product__image">
           <img class="img-responsive" :src="product.image" alt="">
         </div>
         <div class="product__description">
           <div class="product__info">
-            <small>{{product.manufacturer.name}}</small>
+            <small>{{product.company}}</small>
             <h4>{{product.name}}</h4>
           </div>
           <div class="product__price-cart">
             ${{product.price}}
           </div>
         </div>
-      </router-link>
+      </div>
       <div class="product__action">
-       
         <button class="button" @click="addToCart(product)">Add to Cart</button>
       </div>
     </div>
@@ -28,11 +27,11 @@
     name: 'product-item',
     props: ['product'],
     methods: {
-    addToCart(invId) {
+      addToCart(invId) {
         this.$store.dispatch('addToCart', invId);
       },
     }
-    
+
   }
 
 </script>
@@ -43,16 +42,21 @@
     margin-bottom: 30px;
     position: relative;
     border: 1px solid #f4f4f4;
-    box-shadow: 0 0 4px 4px rgba(0,0,0,.05);
-    
+    box-shadow: 0 0 4px 4px rgba(0, 0, 0, .05);
+
   }
-  .product-item{
+
+  .product-item {
     display: inline-block;
     vertical-align: top;
     margin-right: -4px;
     width: 20%;
     padding: 0 10px;
     margin-bottom: 15px;
+  }
+
+  .product__description {
+    margin-top: 25px;
   }
 
 
@@ -114,17 +118,24 @@
   }
 
   .product__action {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    transform: translateY(100%);
+    display: block;
   }
 
   .product__action button {
-    border-radius: 0;
-    width: 100%;
     display: block;
+    background-color: #ccc;
+    text-align: center;
+    border: none;
+    display: block;
+    text-align: center;
+    padding: 10px 10px;
+    width: 100%;
+    transition: all 0.3s;
+    text-transform: uppercase;
+  }
+
+  .product__action button:hover {
+    opacity: 0.6;
   }
 
 </style>
