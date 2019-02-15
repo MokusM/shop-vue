@@ -18,19 +18,15 @@
             <div class="checkout-quantity__count">{{product.quantity}}</div>
             <div class="checkout-quantity__button" @click="quantityPlus(product)">+</div>
           </div>
-
         </div>
       </li>
     </ul>
     <div v-if="!hasProduct()" class="checkout-message">
       <h3>No products...</h3>
       <router-link to="./">Back to list of products</router-link>
-
     </div>
-
   </div>
 </template>
-
 <script>
   export default {
     computed: {
@@ -44,8 +40,6 @@
         }
         return total.toFixed(2);
       }
-      
-
     },
     methods: {
       hasProduct() {
@@ -63,12 +57,8 @@
       quantityPlus(invId) {
         this.$store.dispatch('quantityPlus', invId);
       },
-      
-
-    },
-
+    }
   };
-
 </script>
 <style>
   .checkout-box {

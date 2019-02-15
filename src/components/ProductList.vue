@@ -7,27 +7,20 @@
     </div>
   </div>
 </template>
-
 <script>
   import ProductItem from './ProductItem.vue'
   export default {
-    name: 'product-list',
-   
+    name: 'product-list',   
     computed: {
       products() {
         return this.$store.getters.getProducts
       }
     },
-    data() {
-      return {}
-    },
     components: {
       'product-item': ProductItem
     }
   }
-
 </script>
-
 <style>
   .products {
     background: #F7F8FB;

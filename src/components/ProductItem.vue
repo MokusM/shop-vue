@@ -21,7 +21,6 @@
     </div>
   </div>
 </template>
-
 <script>
   export default {
     name: 'product-item',
@@ -43,7 +42,6 @@
     position: relative;
     border: 1px solid #f4f4f4;
     box-shadow: 0 0 4px 4px rgba(0, 0, 0, .05);
-
   }
 
   .product-item {
