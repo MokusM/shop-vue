@@ -8,17 +8,16 @@
   </div>
 </template>
 <script>
+  import { mapState } from 'vuex'
   import ProductItem from './ProductItem.vue'
   export default {
     name: 'product-list',   
-    computed: {
-      products() {
-        return this.$store.getters.getProducts
-      }
-    },
     components: {
       'product-item': ProductItem
-    }
+    },    
+    computed: {
+      ...mapState(['products'])
+    }    
   }
 </script>
 <style>

@@ -22,13 +22,12 @@
   </div>
 </template>
 <script>
+  import { mapMutations } from 'vuex'
   export default {
     name: 'product-item',
     props: ['product'],
     methods: {
-      addToCart(invId) {
-        this.$store.dispatch('addToCart', invId);
-      },
+      ...mapMutations(['addToCart'])
     }
 
   }

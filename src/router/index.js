@@ -1,22 +1,18 @@
-import Vue from 'vue'
-import Router from 'vue-router'
-import Home from '@/components/home'
-import Checkout from '@/components/checkout'
 
-Vue.use(Router)
+import Vue from "vue";
+import Router from "vue-router";
+Vue.use(Router);
+
+const route = (path, name, component) => ({
+  path,
+  name,
+  component: () => import(`@/components/${component}`)
+})
 
 export default new Router({
+  mode: 'history',
   routes: [
-    {
-      path: '',
-      name: 'Home',
-      component: Home
-    },
-    {
-      path: '/checkout',
-      name: 'Checkout',
-      component: Checkout
-    }
-   ],
-  mode: 'history'
-})
+    route('/', 'home', 'Home'),
+    route('/checkout', 'Checkout', 'Checkout')
+  ]
+});

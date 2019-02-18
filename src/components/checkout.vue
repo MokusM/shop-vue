@@ -28,11 +28,10 @@
   </div>
 </template>
 <script>
+  import { mapState, mapMutations } from 'vuex'
   export default {
     computed: {
-      inCart() {
-        return this.$store.getters.getInCart
-      },
+      ...mapState(['inCart']), 
       totalPrice() {
         let total = 0;
         for (let item of this.$store.state.inCart) {
@@ -45,18 +44,7 @@
       hasProduct() {
         return this.inCart.length > 0;
       },
-      removeFromCart(item) {
-        this.$store.commit('removeFromCart', item);
-      },
-      removeAllInCart(item) {
-        this.$store.dispatch('removeAllInCart', item);
-      },
-      quantityMinus(invId) {
-        this.$store.dispatch('quantityMinus', invId);
-      },
-      quantityPlus(invId) {
-        this.$store.dispatch('quantityPlus', invId);
-      },
+      ...mapMutations(['removeFromCart','removeAllInCart','quantityMinus','quantityPlus']),      
     }
   };
 </script>

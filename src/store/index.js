@@ -78,17 +78,10 @@ export default new Vuex.Store({
       }
     ],
     cartCount: cartCount ? parseInt(cartCount) : 0,
-    inCart: inCart ? JSON.parse(inCart) : [],
+    inCart: inCart ? JSON.parse(inCart) : []    
   },
-  getters: {
-    getProducts: state => state.products,
-    productsById(state) {
-      return productsId => {
-        return state.products.find(product => product.id === productsId)
-      }
-    },
-    inCart: state => state.inCart,
-    getInCart: state => state.inCart,
+  getters: {    
+    //inCart: state => state.inCart,    
   },
   actions: {
     addToCart(context, invId) {
@@ -152,7 +145,6 @@ export default new Vuex.Store({
       state.cartCount++;
       this.commit('saveCart');
     },
-
     saveCart(state) {
       window.localStorage.setItem('inCart', JSON.stringify(state.inCart));
       window.localStorage.setItem('cartCount', state.cartCount);
