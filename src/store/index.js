@@ -2,10 +2,16 @@ let inCart = window.localStorage.getItem('inCart');
 let cartCount = window.localStorage.getItem('cartCount');
 import Vue from 'vue'
 import Vuex from 'vuex'
+import modals from './modals'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    auth: {
+      token: null,
+      userLogin: '',
+      userEmail: ''
+    },
     products: [{
         id: 1,
         name: 'Samsung S7 Edge',
@@ -102,12 +108,12 @@ export default new Vuex.Store({
   },
   mutations: {
     addToCart(state, invId) {
-      let found = state.inCart.find(product => product.id == invId.id);
+      let found = state.inCart.find(product => product.id === invId.id);
       if (found) {
         found.quantity++;
         found.totalPrice = found.quantity * found.price;
       } else {
-        state.inCart.push(invId);
+        state.inCart.unshift(invId);
         Vue.set(invId, 'quantity', 1);
         Vue.set(invId, 'totalPrice', invId.price);
       };
@@ -115,22 +121,17 @@ export default new Vuex.Store({
       this.commit('saveCart');
     },
     removeFromCart(state, item) {
-      let index = state.inCart.indexOf(item);      
-      if (index => -1) {
-        let found = state.inCart.find(product => product.id == item.id);
-        state.cartCount -= found.quantity;
-        state.inCart.splice(index, 1);
-      }
+      state.inCart = state.inCart.filter(product => product !== item);
+      state.cartCount -= item.quantity;
       this.commit('saveCart');
     },
-    removeAllInCart(state, inCart) {
-      var inCart = state.inCart;
-      inCart.splice(0, inCart.length);
+    removeAllInCart(state) {
+      state.inCart = [];
       state.cartCount = 0;
       this.commit('saveCart');
     },
-    quantityMinus: function (state, invId) {
-      let found = state.inCart.find(product => product.id == invId.id);
+    quantityMinus(state, invId) {
+      let found = state.inCart.find(product => product.id === invId.id);
       if (found.quantity > 1) {
         found.quantity--;        
         found.totalPrice = found.quantity * found.price;
@@ -138,8 +139,8 @@ export default new Vuex.Store({
       };
       this.commit('saveCart');
     },
-    quantityPlus: function (state, invId) {
-      let found = state.inCart.find(product => product.id == invId.id);
+    quantityPlus(state, invId) {
+      let found = state.inCart.find(product => product.id === invId.id);
       found.quantity++;
       found.totalPrice = found.quantity * found.price;
       state.cartCount++;
@@ -148,6 +149,7 @@ export default new Vuex.Store({
     saveCart(state) {
       window.localStorage.setItem('inCart', JSON.stringify(state.inCart));
       window.localStorage.setItem('cartCount', state.cartCount);
-    }
+    },
   },
+  modules: { modals }
 })

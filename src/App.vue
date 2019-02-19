@@ -1,24 +1,22 @@
 <template>
   <div id="app">
-    <header class="title">
-      <router-link to="/">Logo Magazine</router-link>
-      <router-link to="/checkout">Cart ({{ $store.state.cartCount }})</router-link>
-	</header>
-	<main class="content">
-		<router-view></router-view>
-	</main>
-    
+    <Header />
+    <main class="content">
+      <router-view></router-view>
+    </main>
+    <modals />
+
   </div>
 </template>
 
 <script>
+  import { mapState } from 'vuex'
+  import Header from '@/components/ui/Header'
+  import Modals from '@/components/Modals'
   export default {
     name: 'app',
-    computed: {
-      inCart() {
-        return this.$store.getters.inCart;
-      },
-    }
+    components: { Header, Modals },
+    computed: { ...mapState(['loaded']) }
   }
 
 </script>
@@ -34,9 +32,10 @@
     background-color: #fff;
     box-shadow: 0 0 25px 0 rgba(0, 0, 0, 0.2)
   }
-  .content{
-	  padding: 0 40px;
-	  background: #F7F8FB;
+
+  .content {
+    padding: 0 40px;
+    background: #F7F8FB;
   }
 
   body {
@@ -286,5 +285,4 @@
     clear: both;
     visibility: hidden;
   }
-
 </style>

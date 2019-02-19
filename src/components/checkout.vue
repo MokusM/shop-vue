@@ -1,13 +1,13 @@
 <template>
   <div class="checkout-box">
     <div class="checkout-box-title">
-      <button class="product-remove" v-if="hasProduct()" @click="removeAllInCart(inCart.id)">remove all</button>
-      <h3 class="total" v-if="hasProduct()">
+      <button class="product-remove" v-if="hasProduct" @click="removeAllInCart(inCart.id)">remove all</button>
+      <h3 class="total" v-if="hasProduct">
         Total: $ {{ totalPrice }}, 00
       </h3>
     </div>
     <ul class="checkout-list">
-      <li v-for="(product, index) in inCart.slice().reverse()" :key="index" class="checkout-list__item">
+      <li v-for="(product, index) in inCart" :key="index" class="checkout-list__item">
         <div class="checkout-list__row">
           <img :src="product.image" alt="" class="checkout-list__image">
           <h3 class="checkout-list__name">{{ product.name }}</h3>
@@ -21,7 +21,7 @@
         </div>
       </li>
     </ul>
-    <div v-if="!hasProduct()" class="checkout-message">
+    <div v-if="!hasProduct" class="checkout-message">
       <h3>No products...</h3>
       <router-link to="./">Back to list of products</router-link>
     </div>
@@ -32,18 +32,14 @@
   export default {
     computed: {
       ...mapState(['inCart']), 
-      totalPrice() {
-        let total = 0;
-        for (let item of this.$store.state.inCart) {
-          total += item.totalPrice;
-        }
-        return total.toFixed(2);
-      }
-    },
-    methods: {
+      totalPrice() {        
+        return this.inCart.reduce((acc, item) => acc + item.totalPrice, 0).toFixed(2);
+      },
       hasProduct() {
         return this.inCart.length > 0;
-      },
+      }
+    },
+    methods: {      
       ...mapMutations(['removeFromCart','removeAllInCart','quantityMinus','quantityPlus']),      
     }
   };
