@@ -9,8 +9,8 @@ export default new Vuex.Store({
   state: {
     auth: {
       token: null,
-      userLogin: '',
-      userEmail: ''
+      login: '',
+      password: ''
     },
     products: [{
         id: 1,
@@ -149,7 +149,8 @@ export default new Vuex.Store({
     saveCart(state) {
       window.localStorage.setItem('inCart', JSON.stringify(state.inCart));
       window.localStorage.setItem('cartCount', state.cartCount);
-    },
+    }
+
   },
   modules: { modals }
 })

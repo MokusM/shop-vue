@@ -7,12 +7,11 @@
       Войти
     </div>
     <div class="modal-body">
-      <form @submit.prevent.stop="submit()">
+      <form @submit.prevent.stop="onSubmit()">
         <input class="comment__input" placeholder="Логин" :class="{ 'error': showError && !login }" v-model="login"
           required>
         <input class="comment__input" placeholder="Пароль" :class="{ 'error': showError && !password }" type="password"
           v-model="password" required>
-
         <button class="btn btn-plus btn-plus-reverse" type="submit">
           Войти
         </button>
@@ -22,6 +21,7 @@
 </template>
 
 <script>
+  
   import { mapState, mapActions } from "vuex";
   export default {
     name: "ModalSignIn",
@@ -42,11 +42,22 @@
 
     methods: {
       ...mapActions(["signUp"]),
-      submit() {
+      /*submit() {
         this.signUp({ login: this.login, password: this.password, name: this.name }).then(() =>
           this.cancel()
         );
-      }
+      }*/
+      onSubmit () {
+        
+          const user = {
+            login: this.login,
+            password: this.password
+          }
+
+          console.log(user)
+        
+        }
+      
     }
   };
 </script>

@@ -1,19 +1,24 @@
 <template>
-    <header class="title">
-        <router-link to="/">Logo Magazine</router-link>
-        <router-link to="/checkout">Cart ({{ cartCount }})</router-link>
-        <router-link to="/">Login</router-link>
-    </header>
+    <div class="modal">
+        <button type="button" class="btn btn-close" @click="cancel">
+            <i class="far fa-times-circle"></i>
+        </button>
+        <div class="modal-body">
+            <div class="b-modal__header">
+                <h3>Вы успешно зарегистрировались</h3>
+            </div>
+        </div>
+    </div>
 </template>
 
 <script>
-    import { mapState } from 'vuex'
+    import { mapState, mapActions } from "vuex";
+    
     export default {
-        computed: {
-        ...mapState(['cartCount'])
-        },
-        methods: {
-
+        props: {
+            success: Function,
+            cancel: Function,
+            modal: Object
         }
     }
 </script>

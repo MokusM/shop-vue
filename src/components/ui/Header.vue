@@ -2,7 +2,7 @@
     <header class="title">
         <router-link to="/">Logo Magazine</router-link>
         <router-link to="/checkout">Cart ({{ cartCount }})</router-link>
-        <button class="btn" @click="showLogin()" style="margin: 0 10px" >Войти</button>
+        <button class="btn" @click="showLogin()" style="margin: 0 10px" >Registartion</button>
     </header>
 </template>
 
@@ -15,7 +15,7 @@
         methods: {
             ...mapMutations('modals', ['openModal']),
             showLogin () {
-                this.openModal({ type: 'signIn' })
+                this.openModal({ type: 'signUp' })
             },
         }
     }
