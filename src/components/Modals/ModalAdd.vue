@@ -1,7 +1,7 @@
 <template>
     <div class="modal">
         <button type="button" class="btn btn-close" @click="cancel">
-            <i class="far fa-times-circle"></i>
+            <i class="icon-close"></i>
         </button>
         <div class="modal-body">
             <div class="b-modal__header">
@@ -12,8 +12,7 @@
 </template>
 
 <script>
-    import { mapState, mapActions } from "vuex";
-    
+    import { mapState, mapActions } from "vuex";    
     export default {
         props: {
             success: Function,

@@ -1,18 +1,18 @@
 <template>
   <div class="modal">
     <button type="button" class="btn btn-close" @click="cancel">
-      <i class="far fa-times-circle"></i>
+      <i class="icon-close"></i>
     </button>
     <div class="modal-header">
       Войти
     </div>
     <div class="modal-body">
-      <form @submit.prevent.stop="onSubmit()">
+      <form  @submit.prevent="login">
         <input class="comment__input" placeholder="Логин" :class="{ 'error': showError && !login }" v-model="login"
           required>
         <input class="comment__input" placeholder="Пароль" :class="{ 'error': showError && !password }" type="password"
           v-model="password" required>
-        <button class="btn btn-plus btn-plus-reverse" type="submit">
+        <button class="btn" type="submit">
           Войти
         </button>
       </form>
@@ -47,16 +47,15 @@
           this.cancel()
         );
       }*/
-      onSubmit () {
-        
-          const user = {
-            login: this.login,
-            password: this.password
-          }
-
-          console.log(user)
-        
-        }
+     
+      login: function () {
+        let login = this.login 
+        let password = this.password
+        this.$store.dispatch('login', { login, password })
+       .then(() => this.$router.push('/'))
+       .catch(err => console.log(err))
+      }
+    
       
     }
   };

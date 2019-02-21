@@ -1,23 +1,23 @@
 <template>
   <div class="modal">
     <button type="button" class="btn btn-close" @click="cancel">
-      <i class="far fa-times-circle"></i>
+      <i class="icon-close"></i>
     </button>
     <div class="modal-header">
       Зарегистрироваться
     </div>
     <div class="modal-body">
-      <form @submit.prevent.stop="submit()">
+      <form @submit.prevent="register">
 
-        <input class="comment__input" placeholder="Логин" type="text" v-model="auth.login" required>
-        <input class="comment__input" placeholder="Емайд" type="text" v-model="auth.email" :class="{ 'error': !validEmail && showError }"
+        <input class="comment__input" placeholder="Логин" type="text" v-model="login" required>
+        <input class="comment__input" placeholder="Емайд" type="text" v-model="email" :class="{ 'error': !validEmail && showError }"
           >
-        <input class="comment__input" placeholder="Пароль" type="password" v-model="auth.password" required
-          :class="{ 'error': auth.password.length < 6 && showError }">
+        <input class="comment__input" placeholder="Пароль" type="password" v-model="password" required
+          :class="{ 'error': password.length < 6 && showError }">
         <input class="comment__input" placeholder="Повторите пароль" type="password"
-          :class="{ 'error': !validPassword && showError }" v-model="auth.repeatPassword">
+          :class="{ 'error': !validPassword && showError }" v-model="repeatPassword">
 
-        <button class="btn btn-plus btn-plus-reverse" type="submit">
+        <button class="btn" type="submit">
           Зарегистрироваться
         </button>
       </form>
@@ -37,39 +37,50 @@
       modal: Object
     },
     data() {
-      return {
-        auth: {
+      return {        
           login: '',
           email: '',
           password: '',
-          repeatPassword: '',
-        },
-        showError: false
+          repeatPassword: '',       
+          showError: false
       }
     },
     computed: {
       validEmail() {        
         const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-      return this.auth.email && re.test(this.auth.email)
+      return this.email && re.test(this.email)
       },
       validPassword() {
-        return this.auth.password && this.auth.password === this.auth.repeatPassword
+        return this.password && this.password === this.repeatPassword
       },
       validLogin() {
-        return this.auth.login
+        return this.login
       }
     },
 
     methods: {
       ...mapMutations('modals', ['openModal']),
       ...mapActions(['signUp']),
-      submit() {
+      register: function () {
         if (this.validEmail && this.validPassword && this.validLogin) {
-          console.log({ login: this.auth.login, password: this.auth.password, email: this.auth.email })
-          this.openModal({ type: 'addSnippet' })
+          
+          let data = {
+            login: this.name,
+            email: this.email,
+            password: this.password
+          }
+          console.log({ data })
+          this.$store.dispatch('register', data)
+          .then(() => {
+              this.success()
+              this.openModal({ type: 'addSnippet' })
+            })
+          .catch(err => console.log(err))
         } else {
           this.showError = true
         }
+        
+        
       }
     }
   };

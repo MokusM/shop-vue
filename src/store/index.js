@@ -3,15 +3,14 @@ let cartCount = window.localStorage.getItem('cartCount');
 import Vue from 'vue'
 import Vuex from 'vuex'
 import modals from './modals'
+import axios from 'axios'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    auth: {
-      token: null,
-      login: '',
-      password: ''
-    },
+    status: '',
+    token: localStorage.getItem('token') || '',
+    user : {},
     products: [{
         id: 1,
         name: 'Samsung S7 Edge',
@@ -87,7 +86,9 @@ export default new Vuex.Store({
     inCart: inCart ? JSON.parse(inCart) : []    
   },
   getters: {    
-    //inCart: state => state.inCart,    
+    //inCart: state => state.inCart, 
+    isLoggedIn: state => !!state.token,
+    authStatus: state => state.status,   
   },
   actions: {
     addToCart(context, invId) {
@@ -104,7 +105,53 @@ export default new Vuex.Store({
     },
     quantityPlus(store, invId) {
       store.commit('quantityPlus', invId);
-    }
+    },
+    logout({commit}){
+      return new Promise((resolve, reject) => {
+        commit('logout')
+        localStorage.removeItem('token')
+        delete axios.defaults.headers.common['Authorization']
+        resolve()
+      })
+    },
+    login({commit}, user){
+      return new Promise((resolve, reject) => {
+        commit('auth_request')
+        axios({url: 'http://localhost:8080/', data: user, method: 'POST' })
+        .then(resp => {
+          const token = resp.data.token
+          const user = resp.data.user
+          localStorage.setItem('token', token)
+          axios.defaults.headers.common['Authorization'] = token
+          commit('auth_success', token, user)
+          resolve(resp)
+        })
+        .catch(err => {
+          commit('auth_error')
+          localStorage.removeItem('token')
+          reject(err)
+        })
+      })
+  },
+  register({commit}, user){
+    return new Promise((resolve, reject) => {
+      commit('auth_request')
+      axios({url: 'http://localhost:8080/checkout', data: user, method: 'POST' })
+      .then(resp => {
+        const token = resp.data.token
+        const user = resp.data.user
+        localStorage.setItem('token', token)
+        axios.defaults.headers.common['Authorization'] = token
+        commit('auth_success', token, user)
+        resolve(resp)
+      })
+      .catch(err => {
+        commit('auth_error', err)
+        localStorage.removeItem('token')
+        reject(err)
+      })
+    })
+  },
   },
   mutations: {
     addToCart(state, invId) {
@@ -149,7 +196,23 @@ export default new Vuex.Store({
     saveCart(state) {
       window.localStorage.setItem('inCart', JSON.stringify(state.inCart));
       window.localStorage.setItem('cartCount', state.cartCount);
-    }
+    },
+    
+  auth_request(state){
+    state.status = 'loading'
+  },
+  auth_success(state, token, user){
+    state.status = 'success'
+    state.token = token
+    state.user = user
+  },
+  auth_error(state){
+    state.status = 'error'
+  },
+  logout(state){
+    state.status = ''
+    state.token = ''
+  },
 
   },
   modules: { modals }
